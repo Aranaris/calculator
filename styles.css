@@ -1,0 +1,10 @@
+#calculator {
+    display: grid;
+    background-color: gray;
+}
+
+.calculator-button{
+    background-color: black;
+    color: white;
+    font-weight: bold;
+}
