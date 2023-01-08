@@ -36,3 +36,14 @@ function divide() {
     return output;
 };
 
+function operate(operation, first, second) {
+    if (operation == 'add') {
+        return add(first, second);
+    } else if (operation == 'multiply') {
+        return multiply(first, second);
+    } else if (operation == 'subtract') {
+        return subtract(first, second);
+    } else if (operation == 'divide') {
+        return divide(first, second);
+    }
+}
