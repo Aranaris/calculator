@@ -1,3 +1,7 @@
+var currentValue = 0;
+var lastValue = 0;
+var lastOperator = '';
+
 function generateCalculator() {
     const calculator = document.createElement('div');
     calculator.classList.add('calculator');
@@ -46,4 +50,30 @@ function operate(operation, first, second) {
     } else if (operation == 'divide') {
         return divide(first, second);
     }
+};
+
+function digitInput(textNumber) {
+    updateCalculatorText(textNumber);
+};
+
+function updateCalculatorText() {
+    const input = document.getElementById("calculator-text");
+    let output = null;
+    const re = new RegExp('\\d{1}');
+    
+    if (arguments[0] == 'equals') {
+        currentValue = operate(currentValue, )
+    } else if (re.test(arguments[0])) {
+        output = arguments[0];
+    } else {
+        return;
+    }
+    input.textContent = output;
 }
+
+const digits = document.getElementsByClassName("digit");
+[].forEach.call(digits, (textNumber) => {
+    textNumber.addEventListener("click", () => digitInput(textNumber.textContent), false);
+});
+
+
