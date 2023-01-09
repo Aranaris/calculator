@@ -60,9 +60,9 @@ function updateCalculatorText() {
     const input = document.getElementById("calculator-text");
     let output = null;
     const re = new RegExp('\\d{1}');
-    
+
     if (arguments[0] == 'equals') {
-        currentValue = operate(currentValue, )
+        currentValue = operate(lastOperator, currentValue, lastValue);
     } else if (re.test(arguments[0])) {
         output = arguments[0];
     } else {
