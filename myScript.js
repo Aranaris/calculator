@@ -54,17 +54,14 @@ function operate(operation, first, second) {
 };
 
 function digitInput(textNumber) {
-    if (lastValue === undefined || lastAction == 'operator') {
-        console.log(storedValue, lastValue, textNumber, lastAction);
+    if (lastValue === undefined || lastValue === 0 || lastAction == 'operator') {
         lastValue = Number(textNumber);
         updateCalculatorText(textNumber);
     } else if (lastAction == 'equals') {
         lastValue = Number(textNumber);
         updateCalculatorText(textNumber);
     } else if (lastAction == 'digit input') {
-        console.log(storedValue, lastValue, textNumber);
         lastValue = Number(lastValue.toString() + textNumber);
-        console.log(lastValue);
         updateCalculatorText(lastValue.toString());
     }
     lastAction = 'digit input';
@@ -74,11 +71,13 @@ function updateCalculatorText() {
     const input = document.getElementById("calculator-text");
     let output = null;
     const re = new RegExp('\\d');
-
+    console.log(arguments[0]);
     if (arguments[0] == 'equals') {
         storedValue = operate(lastOperator, storedValue, lastValue);
+        lastValue = storedValue;
         output = storedValue;
     } else if (re.test(arguments[0])) {
+        
         output = arguments[0];
     } else {
         return;
@@ -97,6 +96,13 @@ function calculate() {
     lastAction = 'equals';
 }
 
+function allClear() {
+    lastValue = 0;
+    storedValue = 0;
+    lastAction = 'clear';
+    updateCalculatorText('0');
+}
+
 const digits = document.getElementsByClassName("digit");
 [].forEach.call(digits, (textNumber) => {
     textNumber.addEventListener("click", () => digitInput(textNumber.textContent), false);
@@ -110,7 +116,6 @@ const operators = document.getElementsByClassName("operator");
 const equals = document.getElementById("equals");
 equals.addEventListener("click", () => calculate(), false);
 
-console.log(add(1,2));
-console.log(multiply(3,2));
-console.log(subtract(5,2));
-console.log(divide(6,2));
+
+const clear = document.getElementById("clear");
+clear.addEventListener("click", () => allClear(), false);
