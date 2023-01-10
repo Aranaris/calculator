@@ -1,6 +1,7 @@
-var currentValue = 0;
-var lastValue = 0;
+var storedValue = 0;
+var lastValue = undefined;
 var lastOperator = '';
+var lastAction = '';
 
 function generateCalculator() {
     const calculator = document.createElement('div');
@@ -9,23 +10,23 @@ function generateCalculator() {
 };
 
 function add() {
-    const sum = 0;
-    for (num in arguments) {
-        sum += num;
+    let sum = 0;
+    for (let i = 0; i < arguments.length; i++) {
+        sum += arguments[i];
     };
     return sum;
 };
 
 function multiply() {
-    const output = 1;
-    for (num in arguments) {
-        output *= num;
+    let output = 1;
+    for (let i = 0; i < arguments.length; i++) {
+        output *= arguments[i];
     };
     return output;
 };
 
 function subtract() {
-    const difference = arguments[0];
+    let difference = arguments[0];
     for (let i = 1; i < arguments.length; i++) {
         difference -= arguments[i];
     };
@@ -33,7 +34,7 @@ function subtract() {
 };
 
 function divide() {
-    const output = arguments[0];
+    let output = arguments[0];
     for (let i = 1; i < arguments.length; i++) {
         output /= arguments[i];
     };
@@ -53,16 +54,30 @@ function operate(operation, first, second) {
 };
 
 function digitInput(textNumber) {
-    updateCalculatorText(textNumber);
+    if (lastValue === undefined || lastAction == 'operator') {
+        console.log(storedValue, lastValue, textNumber, lastAction);
+        lastValue = Number(textNumber);
+        updateCalculatorText(textNumber);
+    } else if (lastAction == 'equals') {
+        lastValue = Number(textNumber);
+        updateCalculatorText(textNumber);
+    } else if (lastAction == 'digit input') {
+        console.log(storedValue, lastValue, textNumber);
+        lastValue = Number(lastValue.toString() + textNumber);
+        console.log(lastValue);
+        updateCalculatorText(lastValue.toString());
+    }
+    lastAction = 'digit input';
 };
 
 function updateCalculatorText() {
     const input = document.getElementById("calculator-text");
     let output = null;
-    const re = new RegExp('\\d{1}');
+    const re = new RegExp('\\d');
 
     if (arguments[0] == 'equals') {
-        currentValue = operate(lastOperator, currentValue, lastValue);
+        storedValue = operate(lastOperator, storedValue, lastValue);
+        output = storedValue;
     } else if (re.test(arguments[0])) {
         output = arguments[0];
     } else {
@@ -71,9 +86,31 @@ function updateCalculatorText() {
     input.textContent = output;
 }
 
+function updateOperator(operation) {
+    lastOperator = operation;
+    storedValue = lastValue;
+    lastAction = 'operator';
+}
+
+function calculate() {
+    updateCalculatorText('equals');
+    lastAction = 'equals';
+}
+
 const digits = document.getElementsByClassName("digit");
 [].forEach.call(digits, (textNumber) => {
     textNumber.addEventListener("click", () => digitInput(textNumber.textContent), false);
 });
 
+const operators = document.getElementsByClassName("operator");
+[].forEach.call(operators, (operation) => {
+    operation.addEventListener("click", () => updateOperator(operation.id), false);
+});
 
+const equals = document.getElementById("equals");
+equals.addEventListener("click", () => calculate(), false);
+
+console.log(add(1,2));
+console.log(multiply(3,2));
+console.log(subtract(5,2));
+console.log(divide(6,2));
