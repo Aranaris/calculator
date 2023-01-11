@@ -3,6 +3,12 @@ var lastValue = undefined;
 var lastOperator = '';
 var lastAction = '';
 
+// var calculatorObject = {
+//     displayValue: 0,
+//     storedValue: undefined,
+//     currentOperator: '',
+// };
+
 function generateCalculator() {
     const calculator = document.createElement('div');
     calculator.classList.add('calculator');
@@ -36,6 +42,9 @@ function subtract() {
 function divide() {
     let output = arguments[0];
     for (let i = 1; i < arguments.length; i++) {
+        if (arguments[i] == 0) {
+            return undefined;
+        }
         output /= arguments[i];
     };
     return output;
@@ -71,7 +80,6 @@ function updateCalculatorText() {
     const input = document.getElementById("calculator-text");
     let output = null;
     const re = new RegExp('\\d');
-    console.log(arguments[0]);
     if (arguments[0] == 'equals') {
         storedValue = operate(lastOperator, storedValue, lastValue);
         lastValue = storedValue;
@@ -82,24 +90,36 @@ function updateCalculatorText() {
     } else {
         return;
     }
-    input.textContent = output;
+    if (output === undefined) {
+        input.textContent = 'Error: Divide by Zero';
+    } else {
+        input.textContent = Math.round(output*1000)/1000;
+    }
+    
 }
 
 function updateOperator(operation) {
+    if (['add','multiply','subtract','divide'].includes(lastOperator)) {
+        storedValue = operate(lastOperator, storedValue, lastValue);
+        updateCalculatorText(storedValue);
+    } else {
+        storedValue = lastValue;
+    }
     lastOperator = operation;
-    storedValue = lastValue;
     lastAction = 'operator';
 }
 
 function calculate() {
     updateCalculatorText('equals');
     lastAction = 'equals';
+    lastOperator = 'equals';
 }
 
 function allClear() {
     lastValue = 0;
     storedValue = 0;
     lastAction = 'clear';
+    lastOperator = 'clear';
     updateCalculatorText('0');
 }
 
