@@ -128,19 +128,30 @@ function allClear() {
     updateCalculatorText('0');
 }
 
-const digits = document.getElementsByClassName("digit");
-[].forEach.call(digits, (textNumber) => {
-    textNumber.addEventListener("click", () => digitInput(textNumber.textContent), false);
+// const digits = document.getElementsByClassName("digit");
+// [].forEach.call(digits, (textNumber) => {
+//     textNumber.addEventListener("click", () => digitInput(textNumber.textContent), false);
+// });
+
+// const operators = document.getElementsByClassName("operator");
+// [].forEach.call(operators, (operation) => {
+//     operation.addEventListener("click", () => updateOperator(operation.id), false);
+// });
+
+// const equals = document.getElementById("equals");
+// equals.addEventListener("click", () => calculate(), false);
+
+
+// const clear = document.getElementById("clear");
+// clear.addEventListener("click", () => allClear(), false);
+
+document.querySelector('#calculator-button-container').addEventListener('click', (event) => {
+    if (event.target.classList.contains('digit'))
+        digitInput(event.target.textContent);
+    else if (event.target.classList.contains('operator'))
+        updateOperator(event.target.id);
+    else if (event.target.id === 'equals')
+        calculate();
+    else if (event.target.id ==='clear')
+        allClear();
 });
-
-const operators = document.getElementsByClassName("operator");
-[].forEach.call(operators, (operation) => {
-    operation.addEventListener("click", () => updateOperator(operation.id), false);
-});
-
-const equals = document.getElementById("equals");
-equals.addEventListener("click", () => calculate(), false);
-
-
-const clear = document.getElementById("clear");
-clear.addEventListener("click", () => allClear(), false);
