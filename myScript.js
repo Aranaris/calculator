@@ -85,7 +85,6 @@ function updateCalculatorText() {
         lastValue = storedValue;
         output = storedValue;
     } else if (re.test(arguments[0])) {
-        
         output = arguments[0];
     } else {
         return;
