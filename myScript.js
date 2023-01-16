@@ -93,7 +93,12 @@ function updateCalculatorText() {
     if (output === undefined) {
         input.textContent = 'Error: Divide by Zero';
     } else {
-        input.textContent = Math.round(output*1000)/1000;
+        //input.textContent = Math.round(output*1000)/1000;
+        const numFormat = new Intl.NumberFormat("en-US", {
+            useGrouping: false,
+            maximumFractionDigits: 3,
+        });
+        input.textContent = numFormat.format(output);
     }
     
 }
