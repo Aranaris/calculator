@@ -79,12 +79,11 @@ function digitInput(textNumber) {
 function updateCalculatorText() {
     const input = document.getElementById("calculator-text");
     let output = null;
-    const re = new RegExp('\\d');
     if (arguments[0] == 'equals' && lastAction !== 'equals') {
         storedValue = operate(lastOperator, storedValue, lastValue);
         lastValue = storedValue;
         output = storedValue;
-    } else if (re.test(arguments[0])) {
+    } else if (/\d/.test(arguments[0])) {
         output = arguments[0];
     } else {
         return;
