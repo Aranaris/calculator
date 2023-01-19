@@ -80,7 +80,7 @@ function updateCalculatorText() {
     const input = document.getElementById("calculator-text");
     let output = null;
     const re = new RegExp('\\d');
-    if (arguments[0] == 'equals') {
+    if (arguments[0] == 'equals' && lastAction !== 'equals') {
         storedValue = operate(lastOperator, storedValue, lastValue);
         lastValue = storedValue;
         output = storedValue;
@@ -103,7 +103,9 @@ function updateCalculatorText() {
 }
 
 function updateOperator(operation) {
-    if (['add','multiply','subtract','divide'].includes(lastOperator)) {
+    if (lastAction === 'operator') {
+        return;
+    } else if (['add','multiply','subtract','divide'].includes(lastOperator)) {
         storedValue = operate(lastOperator, storedValue, lastValue);
         updateCalculatorText(storedValue);
     } else {
